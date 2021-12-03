@@ -4,6 +4,7 @@ from order import Order
 class Passenger:
     available_flights = []
     available_tickets = []
+    selected_bank=None
 
     def __init__(self, name=None, username=None, password=None, contact=None, baggage=None, budget=None, ticket=None, flight=None, bank=None,orders=None):
         self.name = name
@@ -62,14 +63,14 @@ class Passenger:
         for bank in management.get_banks():
             print(bank, end=" | ")
         print("")
-        self.bank = random.choice(management.get_banks())
-        print(f"Selected bank: {self.bank.name}")
+        self.selected_bank = random.choice(management.get_banks())
+        print(f"Selected bank: {self.selected_bank.name}")
 
     def exchange_currency(self, management, entered_money):
         print(f"{self.name} requested for currency exchange...")
         print(f"Current Budget: {self.budget.get('azn')} azn and {self.budget.get('dollar')} dollar")
         self.select_bank(management)
-        exchanged_money = int(management.exchange_currency(self.bank, entered_money))
+        exchanged_money = int(entered_money / self.selected_bank.currency)
         self.budget["azn"] -= entered_money
         self.budget["dollar"] += exchanged_money
         print(f"Exchanging..: Entered money: {entered_money} azn, Exchanged money: {exchanged_money} dollar, Budget: {self.budget.get('azn')} azn and {self.budget.get('dollar')} dollar")
@@ -80,7 +81,7 @@ class Passenger:
         print(f"Current Budget: {self.budget.get('azn')} azn and {self.budget.get('dollar')} dollar")
 
     def order_food(self, food):
-        print("Ordering food...")
+        print(f"{self.name} is ordering food...")
         return Order(self,food)
 
     def order_taxi(self, transport, destination):

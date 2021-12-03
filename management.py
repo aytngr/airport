@@ -27,23 +27,19 @@ class Management:
     def get_cafes(self):
         return self.__cafes
 
-    def check_baggage(self, baggage):
+    def send_firstaid(self, type):
+        for facility in self.__medical_facilities:
+            if type == facility.type:
+                print(f"First aid for {type} sended... Cost: {facility.cost}")
+
+    def check_baggage(self,baggage):
         print("Checking baggage...")
         if baggage.get_scale() >= 20:
             print("Your baggage's scale is greater that 20 kg. It will cost additional money...")
         else:
             print("Your baggage is under 20 kg. No additional money costs...")
         print("------------------------")
-    def send_firstaid(self, type):
-        for facility in self.__medical_facilities:
-            if type == facility.type:
-                print(f"First aid for {type} sended... Cost: {facility.cost}")
-
-    def exchange_currency(self, bank, azn):
-        return azn / bank.currency
 
     def announce_boarding(self):
         print("Boarding to the plane...")
         print("------------------------")
-
-
