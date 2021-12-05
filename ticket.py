@@ -7,7 +7,6 @@ class Ticket:
         self.plane = plane
         self.seat = seat
         self.date = date
-        self.plane = plane
 
     def __str__(self):
         return f"{self.name}: Plane - {self.plane.name}, From - {self.from_c.city}, To - {self.to_c.name}, Seat - {self.seat.number} {self.seat.type}"

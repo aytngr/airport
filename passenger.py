@@ -1,9 +1,11 @@
 import random
+
+import passenger
 from contact import Contact
 from order import Order
 class Passenger:
-    available_flights = []
-    available_tickets = []
+
+
     selected_bank=None
 
     def __init__(self, name=None, username=None, password=None, contact=None, baggage=None, budget=None, ticket=None, flight=None, bank=None,orders=None):
@@ -28,32 +30,54 @@ class Passenger:
         if username==self.username and password==self.password:
             print(f"Hello {self.name}. You succesfully logged in!")
         print("------------------------")
-    def search_flight(self, management, city):
+    def search_and_select_flight(self,airport):
         """Creates a list of available flights according to passenger's destination"""
+        available_flights = []
+        user_input=input("If you want to search a flight type 'yes', else 'no': ")
+        if user_input=='yes':
+            print("Searching flight...")
+            from_c=input("From: ")
+            to_c=input("To: ")
+            date = input("Date: ")
+            for flight in airport.flights:
+                if flight.from_c.name==from_c and flight.to_c.name==to_c and flight.date==date:
+                    available_flights.append(flight)
+            if len(available_flights) != 0:
+                print("Available flights: ")
+                for f in available_flights:
+                    print(f)
 
-        print(f"{self.name} is searching for flights with destination to {city.name}...")
-        print("Available flights are: ")
-        for flight in management.get_flights():
-            if flight.destination == city:
-                self.available_flights.append(flight)
-                print(flight)
+                code_input = input("Enter the code of flight you want to choose: ")
 
-    def select_flight(self):
-        self.flight = random.choice(self.available_flights)
-        print(f"{self.name} chose this flight: {self.flight}")
-        print("------------------------")
+                while self.flight is None:
+                    for f in available_flights:
+                        if code_input == f.code:
+                            self.flight = f
+                            break
+                    else:
+                        code_input=input("Enter proper code: ")
+                print(f"{self.name} chose this flight: {self.flight}")
+            else:
+                print("No flights found on your request")
+        elif user_input=='no':
+            pass
         return self.flight
-
-    def show_tickets(self, flight):
-        print(f"Available tickets on {self.flight.code}: ")
-        for ticket in flight.tickets:
-            self.available_tickets.append(ticket)
-            print(ticket)
-
-    def select_ticket(self):
-        self.ticket = random.choice(self.available_tickets)
-        self.ticket.passenger = self.name
-        print(f"{self.name} chose this ticket: {self.ticket}, Passenger - {self.name}")
+    def choose_ticket(self,flight):
+        available_tickets = []
+        if self.flight is not None:
+            print(f"Available tickets on {self.flight.code}: ")
+            for ticket in flight.tickets:
+                available_tickets.append(ticket)
+                print(ticket)
+            code_input = input("Enter the seat number of ticket you want to choose: ")
+            while self.ticket is None:
+                for t in available_tickets:
+                    if int(code_input) == t.seat.number:
+                        self.ticket = t
+                        break
+                else:
+                    code_input = input("Enter proper code: ")
+            print(f"{self.name} chose this ticket: {self.ticket}, Passenger - {self.name}")
         print("------------------------")
     def get_firstaid(self, management, type):
         print(f"{self.name} needs First Aid for {type}")

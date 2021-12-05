@@ -1,4 +1,6 @@
 from airport import Airport
+from businessticket import BusinessTicket
+from economticket import EconomTicket
 from passenger import Passenger
 from management import Management
 from adress import Adress
@@ -61,31 +63,32 @@ facilities = [medical_facility1, medical_facility2, finance_facility1, finance_f
 # City(name)
 moscow = City("Moscow")
 istanbul = City("Istanbul")
+baku = City("Baku")
 # Seat(number,type,status)
 seat1, seat2, seat3, seat4 = Seat(1, "econom", True), Seat(2, "business", True), Seat(3, "econom", True), Seat(4, "business", True)
 # Plane(name,seats)
 plane1, plane2 = Plane("F509", [seat1, seat2]), Plane("A350", [seat3, seat4])
 # Ticket(from,to,plane,seat,date,passenger)
-ticket1 = Ticket("Ticket 1", user_adress, moscow, plane1, seat1, "11/28/2021")
-ticket2 = Ticket("Ticket 2", user_adress, moscow, plane1, seat2, "11/28/2021")
-ticket3 = Ticket("Ticket 3", user_adress, istanbul, plane2, seat3, "12/28/2021")
-ticket4 = Ticket("Ticket 4", user_adress, istanbul, plane2, seat4, "12/28/2021")
+ticket1 = EconomTicket(user_adress, moscow, plane1, seat1, "11/28/2021")
+ticket2 = BusinessTicket(user_adress, moscow, plane1, seat2, "11/28/2021",facilities)
+ticket3 = EconomTicket(user_adress, istanbul, plane2, seat3, "12/28/2021")
+ticket4 = BusinessTicket(user_adress, istanbul, plane2, seat4, "12/28/2021",facilities)
 istanbul_tickets = [ticket3, ticket4]
 moscow_tickets = [ticket1, ticket2]
 # Airline(name, contact, tickets)
 buta_airline = Airline("Buta Airline", buta_contact, moscow_tickets)
 turkish_airline = Airline("Turkish Airlines", turkish_contact, istanbul_tickets)
 # Flight (name, date, destination,tickets)
-flight1 = Flight("BU 9205", buta_airline.name, "11/28/2021", moscow, [ticket1, ticket2])
-flight2 = Flight("TK 333", turkish_airline.name, "11/28/2021", moscow, [ticket3, ticket4])
-flight3 = Flight("BU 708", buta_airline.name, "12/28/2021", istanbul, [ticket1, ticket2])
-flight4 = Flight("TK 3232", turkish_airline.name, "12/28/2021", istanbul, [ticket3, ticket4])
+flight1 = Flight("BU 9205", buta_airline, "11/28/2021", baku, moscow, moscow_tickets)
+flight2 = Flight("TK 333", turkish_airline, "11/28/2021", baku, moscow, moscow_tickets)
+flight3 = Flight("BU 708", buta_airline, "12/28/2021", baku, istanbul, istanbul_tickets)
+flight4 = Flight("TK 3232", turkish_airline, "12/28/2021", baku, istanbul, istanbul_tickets)
 flights=[flight1,flight2,flight3,flight4]
 # Creating management
 management = Management(flights, [kapital, xalq], [medical_facility1, medical_facility2],
                         [finance_facility1, finance_facility2],shops,cafes)
 # Creating airport
-airport = Airport("Haydar Aliyev International Airport", airport_adress, management, facilities, cafes, shops)
+airport = Airport("Haydar Aliyev International Airport", airport_adress, management, facilities, cafes, shops,flights)
 
 # Passenger(name, username, password, contact, baggage, budget, ticket=None,flight=None, bank=None)
 aytn = Passenger()
@@ -99,30 +102,33 @@ aytn.login("aytn", "12345")
 
 # Displaying info about airport
 airport.display_info()
+airport.display_schedule()
 
 # Searching and choosing flight
-aytn.search_flight(management, moscow)
-selected_flight = aytn.select_flight()
-
+selected_flight = aytn.search_and_select_flight(airport)
+# Add new flight to schedule
+#airport.generate_and_add_new_flight()
 # Searching and choosing ticket
-aytn.show_tickets(selected_flight)
-selected_ticket = aytn.select_ticket()
+aytn.choose_ticket(selected_flight)
+#selected_ticket = aytn.select_ticket()
 
 # Checking baggage
-management.check_baggage(baggage1)
+#management.check_baggage(baggage1)
 
 # Shopping
 
 # Getting first aid
-aytn.get_firstaid(management, "Allergic Reaction")
+#aytn.get_firstaid(management, "Allergic Reaction")
 
 # Exchanging currency
-aytn.exchange_currency(management, 100)
+#aytn.exchange_currency(management, 100)
 
-management.announce_boarding()
+#management.announce_boarding()
 
 #Ordering food
-order1 = aytn.order_food(hamburger)
-print(order1)
+#order1 = aytn.order_food(hamburger)
+#print(order1)
 # Ordering taxi
 # aytn.order_taxi(transport,"Baku, Hazi Aslanov")
+#Adding flight
+
