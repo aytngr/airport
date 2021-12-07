@@ -1,5 +1,5 @@
 class Flight:
-    def __init__(self,code, airline,date,from_c,to_c,tickets=None):
+    def __init__(self,code, airline,date,from_c,to_c,tickets):
         self.code = code
         self.date=date
         self.airline=airline

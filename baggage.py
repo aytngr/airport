@@ -1,5 +1,5 @@
 class Baggage:
-    def __init__(self, scale):
-        self.__scale=scale
-    def get_scale(self):
-        return self.__scale
+    def __init__(self, weight):
+        self.__weight=weight
+    def get_weight(self):
+        return self.__weight

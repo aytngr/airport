@@ -1,14 +1,14 @@
 class Cafe:
-    def __init__(self, name, location, status, offers):
+    def __init__(self, name, location, status, menu):
         self.name=name
         self.location=location
         self.status=status
-        self.offers=offers
+        self.menu=menu
     def display(self):
-        offers_dict = dict()
-        print(f"    '{self.name}': {self.location}, {self.status} Offers: ", end=" ")
-        for o in self.offers:
-            offers_dict['offer'] = o.name
-            offers_dict['cost'] = o.cost
-            print(f"{offers_dict.get('offer')} - {offers_dict.get('cost')}",end=" ")
+        menu_dict = dict()
+        print(f"    '{self.name}': {self.location}, {self.status}, Offers: ", end=" ")
+        for meal in self.menu.meals:
+            menu_dict['offer'] = meal.name
+            menu_dict['cost'] = meal.cost
+            print(f"{menu_dict.get('offer')} - {menu_dict.get('cost')}",end=" ")
         print("")

@@ -1,6 +1,5 @@
 class Plane:
-    def __init__(self, name, seats):
+    def __init__(self, name, seats,boarded=False):
         self.name=name
         self.seats = seats
-    def take_off(self):
-        pass
+        self.boarded=boarded
