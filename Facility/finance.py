@@ -1,4 +1,4 @@
-from facility import Facility
+from Facility.facility import Facility
 class Finance(Facility):
     def __init__(self, cost,bank):
         super().__init__("Finance",cost)

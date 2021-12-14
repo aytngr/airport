@@ -1,28 +1,23 @@
-from airport import Airport
-from businessticket import BusinessTicket
-from economticket import EconomTicket
-from passenger import Passenger
-from management import Management
-from adress import Adress
-from paymentaccount import PaymentAccount
-from contact import Contact
-from airline import Airline
-from flight import Flight
-from city import City
-from seat import Seat
-from plane import Plane
-from menu import Menu
-from admin import Admin
-from baggage import Baggage
-from facility import Facility
-from firstaid import FirstAid
-from finance import Finance
-from bank import Bank
-from car import Car
-from transport import Transport
-from shop import Shop
-from meal import Meal
-from cafe import Cafe
+from Airport.airport import Airport
+from Flight.businessticket import BusinessTicket
+from Flight.economticket import EconomTicket
+from User.passenger import Passenger
+from Airport.management import Management
+from Data.adress import Adress
+from Data.contact import Contact
+from Flight.airline import Airline
+from Flight.flight import Flight
+from Data.city import City
+from Plane.seat import Seat
+from Plane.plane import Plane
+from Facility.menu import Menu
+from User.admin import Admin
+from Facility.firstaid import FirstAid
+from Facility.finance import Finance
+from Airport.bank import Bank
+from Airport.shop import Shop
+from Facility.meal import Meal
+from Airport.cafe import Cafe
 
 # Adress(city)
 user_adress = Adress("Baku")
@@ -49,11 +44,7 @@ plane_menu = Menu([hamburger,coffee])
 mcdonalds = Cafe("McDonalds", "Terminal 1 - 3rd floor", "Open", mcdonalds_menu)
 illy = Cafe("Illy", "Terminal 1 - 3rd floor", "Open", illy_menu)
 cafes = [mcdonalds, illy]
-# Car(model,cost)
-eco_taxi = Car("Eco Taxi", "3$")
-premium_taxi = Car("Premium Taxi", "5$")
-# transport(name,cars)
-transport = Transport("Airport Taxi", [eco_taxi, premium_taxi])
+
 # Bank(name,currency)
 kapital = Bank("Kapital Bank", 1.65)
 xalq = Bank("Xalq Bank", 1.71)
@@ -72,7 +63,7 @@ baku = City("Baku")
 seat1, seat2, seat3, seat4 = Seat(1, "regular", True), Seat(2, "business", True), Seat(3, "regular", True), Seat(4, "business", True)
 # Plane(name,seats)
 plane1, plane2 = Plane("F509", [seat1, seat2]), Plane("A350", [seat3, seat4])
-# Ticket(from,to,plane,seat,date,passenger)
+# Ticket(from,to,Plane,seat,date,passenger)
 ticket1 = EconomTicket(baku, moscow, plane1, seat1, "11/28/2021")
 ticket2 = BusinessTicket(baku, moscow, plane1, seat2, "11/28/2021","Meal Service")
 ticket3 = EconomTicket(baku, istanbul, plane2, seat3, "12/28/2021")
@@ -91,22 +82,24 @@ flights=[flight1,flight2,flight3,flight4]
 # Creating management
 management = Management(flights, [kapital, xalq], [medical_facility1, medical_facility2],
                         [finance_facility1, finance_facility2],shops,cafes)
-# Creating airport
+# Creating Airport
 airport = Airport("Haydar Aliyev International Airport", airport_adress, management, facilities, cafes, shops,flights)
+
+# Displaying info about Airport
+airport.display_info()
+airport.display_schedule()
 
 # Checking and registering user
 user = management.check_user()
 # Loggining in
 user.login()
 
-# Displaying info about airport
-airport.display_info()
-airport.display_schedule()
 
 # Admin stuff
 if isinstance(user, Admin):
-    airport.generate_and_add_new_flight()
-    airport.add_ticket_to_flight()
+    user.management = management
+    user.generate_and_add_new_flight()
+    user.add_ticket_to_flight()
 # Passenger stuff
 if isinstance(user, Passenger):
     # Searching and choosing flight

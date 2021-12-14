@@ -1,4 +1,4 @@
-from ticket import Ticket
+from Flight.ticket import Ticket
 class BusinessTicket(Ticket):
     def __init__(self, from_c, to_c, plane, seat, date,service):
         super().__init__("Business Ticket",from_c, to_c, plane, seat, date,350)

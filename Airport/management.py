@@ -1,6 +1,5 @@
-import random
-from admin import Admin
-from passenger import Passenger
+from User.admin import Admin
+from User.passenger import Passenger
 class Management:
     def __init__(self, flights, banks, medical_facilities, finance_facilities,shops,cafes):
         self.__flights = flights
@@ -48,9 +47,9 @@ class Management:
             print("------------------------")
 
     def announce_boarding(self,passenger):
-        if passenger.ticket != None:
-            print("Boarding to the plane...")
-            passenger.plane.boarded=True
+        if passenger.get_ticket() != None:
+            print("Boarding to the Plane...")
+            passenger.get_plane().boarded=True
             print("------------------------")
 
     def check_user(self):

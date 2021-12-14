@@ -1,4 +1,4 @@
-from facility import Facility
+from Facility.facility import Facility
 class FirstAid(Facility):
     def __init__(self,cost,type):
         super().__init__("First Aid",cost)
