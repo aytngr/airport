@@ -1,6 +1,4 @@
 
-
-
 class Airport:
     def __init__(self,name,location,management,facilities,cafes,shops,flights):
         self.name=name

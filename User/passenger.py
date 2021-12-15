@@ -1,4 +1,3 @@
-
 from User.baggage import Baggage
 from User.paymentaccount import PaymentAccount
 from User.order import Order
@@ -6,34 +5,37 @@ from User.user import User
 
 
 class Passenger(User):
-    selected_bank=None
-    
-    def __init__(self, name = None, username = None, password = None, contact = None, adress = None, payment_account=None, baggage=None, ticket=None, flight=None,orders=None,plane=None):
+    selected_bank = None
+
+    def __init__(self, name=None, username=None, password=None, contact=None, adress=None, payment_account=None,
+                 baggage=None, ticket=None, flight=None, orders=None, plane=None):
         super().__init__(name, username, password, contact, adress)
         self.__baggage = baggage
         self.__ticket = ticket
         self.__flight = flight
-        self.__orders=orders
-        self.__payment_account=payment_account
-        self.__plane=plane
+        self.__orders = orders
+        self.__payment_account = payment_account
+        self.__plane = plane
 
     def get_ticket(self):
         return self.__ticket
+
     def get_plane(self):
         return self.__plane
-    def search_and_select_flight(self,airport):
+
+    def search_and_select_flight(self, airport):
         """Creates a list of available flights according to passenger's destination"""
         available_flights = []
-        user_input=input("If you want to search a flight, type 'search', if not 'exit': ")
+        user_input = input("If you want to search a flight, type 'search', if not 'exit': ")
         while user_input != 'search' and user_input != 'exit':
             user_input = input("Type 'search' or 'exit': ")
-        if user_input=='search':
+        if user_input == 'search':
             print("Searching flight...")
-            from_c=input("From: ")
-            to_c=input("To: ")
+            from_c = input("From: ")
+            to_c = input("To: ")
             date = input("Date: ")
             for flight in airport.flights:
-                if flight.from_c.name==from_c and flight.to_c.name==to_c and flight.date==date:
+                if flight.from_c.name == from_c and flight.to_c.name == to_c and flight.date == date:
                     available_flights.append(flight)
             if len(available_flights) != 0:
                 print("Available flights: ")
@@ -47,12 +49,12 @@ class Passenger(User):
                             self.__flight = f
                             break
                     else:
-                        code_input=input("Enter proper code: ")
+                        code_input = input("Enter proper code: ")
                 print(f"{self._name} chose this flight: {self.__flight}")
             else:
                 print("No flights found on your request")
                 self.search_and_select_flight(airport)
-        elif user_input=='search':
+        elif user_input == 'search':
             pass
 
         return self.__flight
@@ -88,26 +90,32 @@ class Passenger(User):
                     self.add_payment_account()
                 print("Buying ticket...")
                 print(f"Ticket Price: {self.__ticket.price}, Your budget: {self.__payment_account.budget}")
-                if self.__payment_account.pay(self.__ticket.price,'azn'):
+                if self.__payment_account.pay(self.__ticket.price, 'azn'):
                     print("You successfully paid for ticket...")
                 else:
                     print("Update your Payment Account: ")
-                    self.__payment_account=None
+                    self.__payment_account = None
                     self.add_payment_account()
                 print(f"Current budget: {self.__payment_account.budget}")
                 print("------------------------")
+
     def add_payment_account(self):
         while self.__payment_account is None:
             print("You don't have Payment Account or needed to be updated. Adding new payment account...")
             azn = int(input("Azn: "))
             dollar = int(input("Dollar: "))
-            self.__payment_account = PaymentAccount(self._name,{'azn':azn,'dollar':dollar})
-
+            self.__payment_account = PaymentAccount(self._name, {'azn': azn, 'dollar': dollar})
 
     def add_baggage(self):
         user_input = input("For adding baggage, type 'add': ")
         if user_input == "add":
-            return Baggage(int(input("Enter your baggage weight: ")))
+            try:
+                weight_input = input("Enter your baggage weight: ")
+                if int(weight_input) < 0:
+                    raise ValueError
+                return Baggage(int(weight_input))
+            except ValueError:
+                print("It is not proper value!")
 
     def get_firstaid(self, management):
         user_input = input("If you need First Aid, type 'yes': ")
@@ -136,7 +144,8 @@ class Passenger(User):
             if self.__payment_account is None:
                 self.add_payment_account()
             print(f"{self._name} requested for currency exchange...")
-            print(f"Current Budget: {self.__payment_account.budget.get('azn')} azn and {self.__payment_account.budget.get('dollar')} dollar")
+            print(
+                f"Current Budget: {self.__payment_account.budget.get('azn')} azn and {self.__payment_account.budget.get('dollar')} dollar")
             self.select_bank(management)
             entered_money = int(input("Enter azn amount: "))
             while entered_money > self.__payment_account.budget.get('azn'):
@@ -144,7 +153,8 @@ class Passenger(User):
             exchanged_money = int(entered_money / self.selected_bank.currency)
             self.__payment_account.budget["azn"] -= entered_money
             self.__payment_account.budget["dollar"] += exchanged_money
-            print(f"Exchanging..: Entered money: {entered_money} azn, Exchanged money: {exchanged_money} dollar, Budget: {self.__payment_account.budget.get('azn')} azn and {self.__payment_account.budget.get('dollar')} dollar")
+            print(
+                f"Exchanging..: Entered money: {entered_money} azn, Exchanged money: {exchanged_money} dollar, Budget: {self.__payment_account.budget.get('azn')} azn and {self.__payment_account.budget.get('dollar')} dollar")
             print("------------------------")
             return exchanged_money
 
@@ -167,5 +177,3 @@ class Passenger(User):
                 order = Order(self, ordered_meal)
                 print(order)
                 return order
-
-
